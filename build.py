@@ -295,10 +295,6 @@ def build_zip(args):
         f.write('\n'.join(filter(lambda x:not (x.strip().startswith('#') or x.strip() == ''), content.split('\n'))) + '\n')
 
     shutil.copytree(NATIVE_OUTPUT_DIR, module_path, dirs_exist_ok=True)
-    for p, _, fns in (module_path / "bin").walk():
-        for fn in fns:
-            if fn == 'zygisk_daemon':
-                os.rename(p / fn, p / 'zygiskd')
 
     # build zip
     build_name = f'{MODULE_NAME}-{RELEASE_NAME}-{GIT_COMMIT_COUNT}-{GIT_COMMIT_HASH}-{build_type}'
@@ -382,7 +378,6 @@ def main():
         prog="build",
         description=""
     )
-    ap.add_argument('--log', dest='log', action='store_true', default=False, help="enable debug log")
     ap.add_argument('--ndk', dest='ndk', required=False, help="ndk")
     ap.add_argument('--save-debug', dest='save_debug', action='store_true')
     ap.add_argument('--force', dest='force', help="build without cache", action='store_true')
